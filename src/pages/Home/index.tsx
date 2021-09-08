@@ -12,7 +12,7 @@ import { Container, InputContainer, Header, ListContainer } from './style';
 export const Home: React.FC = () => {
   return (
     <Container>
-      <Loader />
+      {/* <Loader /> */}
       <InputContainer>
         <input type="text" placeholder="Pesquise pelo nome" />
       </InputContainer>

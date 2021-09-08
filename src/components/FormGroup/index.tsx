@@ -2,8 +2,17 @@ import React from 'react';
 
 import { Container } from './style';
 
-export const FormGroup: React.FC = ({ children }) => {
-  return <Container>{children}</Container>;
+interface FormGroupProps {
+  error?: string;
+}
+
+export const FormGroup: React.FC<FormGroupProps> = ({ children, error }) => {
+  return (
+    <Container>
+      {children}
+      {error && <small>{error}</small>}
+    </Container>
+  );
 };
 
 export default FormGroup;
