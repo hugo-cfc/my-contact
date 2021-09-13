@@ -22,6 +22,8 @@ export const StyledInput = styled.input<InputProps>`
     border-color: ${({ theme }) => theme.colors.primary.main};
   }
 
+  appearance: none;
+
   ${({ theme, error }) =>
     error &&
     css`

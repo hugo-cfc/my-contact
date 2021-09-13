@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Card from '../../components/Card';
-import Modal from '../../components/Modal';
-import Loader from '../../components/Loader';
+// import Modal from '../../components/Modal';
+// import Loader from '../../components/Loader';
 
 import arrowIcon from '../../assets/icons/arrowIcon.svg';
 
@@ -36,5 +36,9 @@ export const Home: React.FC = () => {
     </Container>
   );
 };
+
+fetch('http://localhost:3000')
+  .then(response => console.log('response', response))
+  .catch(error => console.log('erro', error));
 
 export default Home;

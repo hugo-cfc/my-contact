@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 import useErrors from '../../hooks/useErrors';
 import isEmailValid from '../../utils/isEmailvalid';
+import formatPhone from '../../utils/formatPhone';
 
 import FormGroup from '../FormGroup';
 import Input from '../Input';
@@ -19,7 +20,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
-  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
+  const { setError, removeError, getErrorMessageByFieldName, errors } =
+    useErrors();
+
+  const isFormValid = name && errors.length === 0;
 
   const handleNameChange = useCallback(
     e => {
@@ -46,13 +50,17 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
     [removeError, setError],
   );
 
+  const handlePhoneChange = useCallback(e => {
+    setPhone(formatPhone(e.target.value));
+  }, []);
+
   const handleSubmit = useCallback(
     e => {
       e.preventDefault();
       console.log({
         name,
         email,
-        phone,
+        phone: phone.replace(/\D/g, ''),
         category,
       });
     },
@@ -60,10 +68,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
   );
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
-          placeholder="Nome"
+          placeholder="Nome*"
           value={name}
           onChange={handleNameChange}
           error={getErrorMessageByFieldName('name')}
@@ -72,6 +80,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
           placeholder="E-mail"
+          type="email"
           value={email}
           onChange={handleEmailChange}
           error={getErrorMessageByFieldName('email')}
@@ -82,7 +91,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
         <Input
           placeholder="Telefone"
           value={phone}
-          onChange={e => setPhone(e.target.value)}
+          onChange={handlePhoneChange}
+          maxLength={15}
         />
       </FormGroup>
 
@@ -95,7 +105,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ buttonLabel }) => {
       </FormGroup>
 
       <ButtonContainer>
-        <Button type="submit">{buttonLabel}</Button>
+        <Button type="submit" disabled={!isFormValid}>
+          {buttonLabel}
+        </Button>
       </ButtonContainer>
     </Form>
   );

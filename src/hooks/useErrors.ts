@@ -9,13 +9,14 @@ interface useErrorsData {
   setError({ field, message }: Errors): void;
   removeError(fieldName: string): void;
   getErrorMessageByFieldName(fieldName: string): string | undefined;
+  errors: Array<Errors>;
 }
 
 export const useErrors = (): useErrorsData => {
   const [errors, setErrors] = useState<Errors[]>([]);
 
   const setError = ({ field, message }: Errors): void => {
-    const errorAlreadyExists = errors.find(error => error.field === 'email');
+    const errorAlreadyExists = errors.find(error => error.field === field);
 
     if (errorAlreadyExists) return;
 
@@ -34,7 +35,7 @@ export const useErrors = (): useErrorsData => {
     return errors.find(error => error.field === fieldName)?.message;
   };
 
-  return { setError, removeError, getErrorMessageByFieldName };
+  return { setError, removeError, getErrorMessageByFieldName, errors };
 };
 
 export default useErrors;
